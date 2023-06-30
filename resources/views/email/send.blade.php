@@ -544,7 +544,7 @@
                                                                     <h1 style="Margin:0;line-height:55px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:46px;font-style:normal;font-weight:bold;color:#333333">
                                                                         <strong>
                                                                             <a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:none;color:#5C68E2;font-size:46px" href="">
-                                                                                {{ $user['code'] }}
+                                                                                {{ $details['code'] }}
                                                                             </a>
                                                                         </strong>
                                                                     </h1>

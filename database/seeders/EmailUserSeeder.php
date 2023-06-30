@@ -15,6 +15,6 @@ class EmailUserSeeder extends Seeder
      */
     public function run()
     {
-        UserEmail::factory()->count(100)->create();
+        UserEmail::factory()->count(5)->create();
     }
 }

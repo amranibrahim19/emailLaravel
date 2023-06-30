@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        Import Export Excel & CSV to Database - Laravel 10 Yajra Datatables Example
+        Send Bulk Email
     </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -46,8 +46,35 @@
 
     <div class="container mt-5 mb-5">
         <h2 class="mb-4">
-            Import Export Excel & CSV to Database - Laravel Yajra Datatables Example
+            Send Bulk Email
         </h2>
+
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> {{ $message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @elseif ($message = Session::get('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> {{ $message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        <div class="container mb-3">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_2">
+                    Upload
+                </button>
+                <form id="send_bulk">
+                    @csrf
+                    <button type="submit" class="btn btn-info ms-2 text-white">
+                        Send Email
+                    </button>
+                </form>
+
+            </div>
+        </div>
         <table class="table table-bordered yajra-datatable">
             <thead>
                 <tr>
@@ -87,6 +114,45 @@
                                         Code
                                     </label>
                                     <input class="form-control" id="code" name="code" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="kt_modal_2" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" id="payment_modal">
+                    <h3 class="fw-bolder m-0">
+                        Upload File
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <form id="upload" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" id="id">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div>
+                                    <label>
+                                        File
+                                    </label>
+                                    <input class="form-control" id="file" name="file" type="file" required>
                                 </div>
                             </div>
                         </div>
@@ -213,6 +279,60 @@
         });
 
 
+    });
+
+    $('#send_bulk').submit(function(e) {
+        e.preventDefault();
+
+        $('#loader').show();
+
+        let formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('send.bulk') }}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: (response) => {
+                this.reset();
+                $('#loader').hide();
+                alert("Success");
+                $("#kt_modal_1").modal('hide');
+                $('.yajra-datatable').DataTable().ajax.reload();
+            },
+            error: function(response) {
+                $('#loader').hide();
+                alert("Error");
+            }
+        });
+    });
+
+    $('#upload').submit(function(e) {
+        e.preventDefault();
+
+        $('#loader').show();
+
+        let formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('upload') }}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: (response) => {
+                this.reset();
+                $('#loader').hide();
+                alert("Success");
+                $("#kt_modal_2").modal('hide');
+                $('.yajra-datatable').DataTable().ajax.reload();
+            },
+            error: function(response) {
+                $('#loader').hide();
+                alert("Error");
+            }
+        });
     });
 </script>
 

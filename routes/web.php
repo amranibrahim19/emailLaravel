@@ -25,9 +25,8 @@ Route::get('/', function () {
 Route::get('user-email/data', [UserEmailController::class, 'getEmailUser'])->name('user-email.data');
 Route::get('user-email/show/{id}', [UserEmailController::class, 'show'])->name('user-email.show');
 Route::post('user-email/update/{id}', [UserEmailController::class, 'update'])->name('user-email.update');
+Route::get('user-email/delete/{id}', [UserEmailController::class, 'destroy'])->name('user-email.delete');
 
+Route::post('send/bulk', [UserEmailController::class, 'sendBulk'])->name('send.bulk');
 
-// Route::get('/email', [EmailController::class, 'index'])->name('email.index');
-// Route::post('/email', [EmailController::class, 'send'])->name('email.send');
-
-// Route::post('/email/send', [EmailController::class, 'email'])->name('email.post');
+Route::post('upload', [UserEmailController::class, 'upload'])->name('upload');

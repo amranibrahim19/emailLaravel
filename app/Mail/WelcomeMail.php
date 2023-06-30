@@ -20,11 +20,11 @@ class WelcomeMail extends Mailable
      */
 
 
-    public $user;
+    public $details;
 
-    public function __construct($user)
+    public function __construct($details)
     {
-        $this->user = $user;
+        $this->details = $details;
     }
     /**
      * Get the message envelope.
@@ -50,7 +50,7 @@ class WelcomeMail extends Mailable
         return new Content(
             view: 'email.send',
             with: [
-                'user' => $this->user,
+                'details' => $this->details,
             ]
         );
     }
