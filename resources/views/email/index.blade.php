@@ -1,142 +1,219 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.104.2">
-    <title>Album example · Bootstrap v5.2</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/album/">
-
-
-
-
-
+    <title>
+        Import Export Excel & CSV to Database - Laravel 10 Yajra Datatables Example
+    </title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.2/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
-    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#712cf9">
-
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.75) no-repeat center center;
+            background-size: 100px;
+            z-index: 10000;
         }
 
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
+        .spinner-border {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -50px;
+            margin-left: -50px;
+            z-index: 10000;
 
-        .b-example-divider {
-            height: 3rem;
-            background-color: rgba(0, 0, 0, .1);
-            border: solid rgba(0, 0, 0, .15);
-            border-width: 1px 0;
-            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-
-        .b-example-vr {
-            flex-shrink: 0;
-            width: 1.5rem;
-            height: 100vh;
-        }
-
-        .bi {
-            vertical-align: -.125em;
-            fill: currentColor;
-        }
-
-        .nav-scroller {
-            position: relative;
-            z-index: 2;
-            height: 2.75rem;
-            overflow-y: hidden;
-        }
-
-        .nav-scroller .nav {
-            display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
         }
     </style>
-
-
 </head>
 
 <body>
 
+    <div id="loader">
+        <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
+    <div class="container mt-5 mb-5">
+        <h2 class="mb-4">
+            Import Export Excel & CSV to Database - Laravel Yajra Datatables Example
+        </h2>
+        <table class="table table-bordered yajra-datatable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
-    <main>
-
-        <section class="py-5 text-center container">
-            <div class="row py-lg-5">
-                <div class="col-lg-12 col-md-12 mx-auto">
-                    <h1 class="fw-light">
-                        Import and Read CSV File in Laravel 10
-                    </h1>
-                    <p class="lead text-muted">
-                        This is a simple example of a CSV file import and read in Laravel 10.
-                    </p>
+    <div class="modal fade" id="kt_modal_1" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" id="payment_modal">
+                    <h3 class="fw-bolder m-0">Details Payment</h3>
                 </div>
-            </div>
-        </section>
-
-        <div class="album py-5 ">
-            <div class="container">
-
-                <form action="{{route('email.send')}}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        <div class="col-md-3">
-                            <label for="">
-                                <h5>
-                                    <strong>Import CSV File</strong>
-                                </h5>
-                            </label>
-                            <input type="file" class="form-control " name="fileName" id="fileName">
+                <div class="modal-body">
+                    <form id="payment" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" id="id">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div>
+                                    <label>
+                                        Email
+                                    </label>
+                                    <input class="form-control" id="email" name="email" type="text" required>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div>
+                                    <label>
+                                        Code
+                                    </label>
+                                    <input class="form-control" id="code" name="code" type="text" required>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-sm btn-primary btn-block mt-4">
-                                <h5>
-                                    <strong>Import Data</strong>
-                                </h5>
-                            </button>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+
             </div>
         </div>
-
-    </main>
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-
+    </div>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+
+        var table = $('.yajra-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('user-email.data') }}",
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'code',
+                    name: 'code'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
+                    searchable: true
+                },
+            ]
+        });
+
+    });
+
+    $(document).on('click', '#view', function(event, x) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        let id = $('#id').val();
+        var data = {
+            _token: '{{ csrf_token() }}',
+            id: id
+        };
+
+        $('#loader').show();
+        $.ajax({
+            url: href,
+            data: data,
+
+            // return the result
+            success: function(result) {
+                var data = result.list;
+                console.log(data);
+                $('#loader').hide();
+                $('#id').val(data.id);
+                $('#email').val(data.email);
+                $('#code').val(data.code);
+
+                $('#kt_modal_1').modal('show');
+            },
+            complete: function() {},
+            error: function(jqXHR, testStatus, error) {
+                console.log(error);
+                alert("Page " + href + " cannot open. Error:" + error);
+                $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
+
+    $('#payment').submit(function(e) {
+
+
+        e.preventDefault();
+
+        $('#loader').show();
+
+        let formData = new FormData(this);
+        let id = $('#id').val();
+
+        $.ajax({
+            // headers: {
+            //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            // },
+            type: 'POST',
+            url: "{{ url('user-email/update/') }}" + '/' + id,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: (response) => {
+                this.reset();
+                $('#loader').hide();
+                alert("Success");
+                $("#kt_modal_1").modal('hide');
+                $('.yajra-datatable').DataTable().ajax.reload();
+            },
+            error: function(response) {
+                $('#loader').hide();
+                alert("Error");
+            }
+        });
+
+
+    });
+</script>
 
 </html>

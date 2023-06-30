@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\EmailController;
+use App\Http\Controllers\UserEmailController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,8 +22,12 @@ Route::get('/', function () {
     return view('email.index');
 });
 
-Route::get('/email', [EmailController::class, 'index'])->name('email.index');
-Route::post('/email', [EmailController::class, 'send'])->name('email.send');
+Route::get('user-email/data', [UserEmailController::class, 'getEmailUser'])->name('user-email.data');
+Route::get('user-email/show/{id}', [UserEmailController::class, 'show'])->name('user-email.show');
+Route::post('user-email/update/{id}', [UserEmailController::class, 'update'])->name('user-email.update');
 
-// Send Email
-Route::post('/email/send', [EmailController::class, 'email'])->name('email.post');
+
+// Route::get('/email', [EmailController::class, 'index'])->name('email.index');
+// Route::post('/email', [EmailController::class, 'send'])->name('email.send');
+
+// Route::post('/email/send', [EmailController::class, 'email'])->name('email.post');
